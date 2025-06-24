@@ -1,8 +1,8 @@
 name: CI Stage
 on:
-  # pull_request:
-  #   branches:
-  #     - "main"
+  pull_request:
+    branches:
+      - "main"
   push:  
     branches:
        - "main"
@@ -17,6 +17,7 @@ jobs:
         uses: JacobDomagala/StaticAnalysis@v0.0.8
         with:
           language: "Python"
+          pr_num: ${{github.sha}}
       - uses: hadolint/hadolint-action@v3.1.0
         with:
           dockerfile: Dockerfile    
