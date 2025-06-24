@@ -17,6 +17,8 @@ jobs:
         uses: JacobDomagala/StaticAnalysis@v0.0.8
         with:
           language: "Python"
+
+
       - uses: hadolint/hadolint-action@v3.1.0
         with:
           dockerfile: Dockerfile    
