@@ -18,6 +18,7 @@ jobs:
         with:
           language: "Python"
           pr_num: ${{github.sha}}
+          force_console_print: true
       - uses: hadolint/hadolint-action@v3.1.0
         with:
           dockerfile: Dockerfile    
