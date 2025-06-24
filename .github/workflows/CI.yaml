@@ -1,0 +1,46 @@
+name: CI Stage
+on:
+  pull_request:
+    branches:
+      - "main"
+  push:  
+    branches:
+       - "main"
+jobs:
+  linting:
+    name: linting code + dockerfile
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v4.2.2
+      - name: Static analysis for C++/Python project
+        uses: JacobDomagala/StaticAnalysis@v0.0.8
+        with:
+          language: "Python"
+      - uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: Dockerfile    
+  unit_testing:
+    name: test code
+    runs-on: ubuntu-latest
+    needs: linting
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v4.2.2
+      - name: Run pytest
+        uses: pavelzw/pytest-action@v2.2.0
+        with:
+          verbose: true
+          emoji: true
+          job-summary: true
+          report-title: 'Test Report'
+  build_image:
+    needs: unit_testing
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          tags: ghcr.io/${{ github.repository_owner }}/hivebox:${{ github.sha }}          
+              
