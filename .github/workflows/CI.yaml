@@ -13,11 +13,8 @@ jobs:
     steps:
       - name: checkout repo
         uses: actions/checkout@v4.2.2
-      - name: Static analysis for C++/Python project
-        uses: JacobDomagala/StaticAnalysis@v0.0.8
-        with:
-          language: "Python"
-          force_console_print: true
+      - name: run_pylint
+        uses: colevandersWands/run_pylint@v1.0.2
       - uses: hadolint/hadolint-action@v3.1.0
         with:
           dockerfile: Dockerfile    
