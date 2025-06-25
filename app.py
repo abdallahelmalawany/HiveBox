@@ -20,6 +20,7 @@ async def root():
 async def temperature():
     """Return average temperature from multiple sense boxes."""
     avg_temp = 0
+    count = 0
     sense_boxes_ids = [
         "5eba5fbad46fb8001b799786",
         "5c21ff8f919bf8001adf2488",
@@ -30,24 +31,31 @@ async def temperature():
         response = requests.get(
             f"https://api.opensensemap.org/boxes/{sense_box_id}/sensors"
         )
-        sensors = response.json()["sensors"]
-        temper_sensor_id = ""
+        sensors = response.json().get("sensors", [])
 
-        for sensor in sensors:
-            if sensor["title"] == "Temperatur":
-                temper_sensor_id = sensor["_id"]
+        temper_sensor_id = next(
+            (sensor["_id"] for sensor in sensors if sensor["title"] == "Temperatur"),
+            None
+        )
 
-                from_date = (
+        if not temper_sensor_id:
+            continue  # Skip if no temperature sensor found
+
+        from_date = (
             datetime.now(timezone.utc) - timedelta(hours=1)
         ).isoformat().replace("+00:00", "Z")
 
-        temperatures = requests.get(
+        data_url = (
             f"https://api.opensensemap.org/boxes/{sense_box_id}/data/"
             f"{temper_sensor_id}?from-date={from_date}"
-        ).json()
+        )
+        temperatures = requests.get(data_url).json()
+
+        if temperatures:
+            last_temperature_value = temperatures[0]["value"]
+            avg_temp += float(last_temperature_value)
+            count += 1
+
+    return {"avg_temp": str(avg_temp / count)} if count else {"avg_temp": "0"}
 
 
-        last_temperature_value = temperatures[0]["value"]
-        avg_temp += float(last_temperature_value)
-
-    return {"avg_temp": str(avg_temp / len(sense_boxes_ids))}

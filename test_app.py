@@ -7,7 +7,7 @@ import pytest
 from httpx import AsyncClient, ASGITransport
 from app import app
 
-
+# pylint: disable=too-few-public-methods
 class MockResponse:
     """Mock response object for requests.get()."""
 

@@ -26,7 +26,7 @@ jobs:
       - name: checkout repo
         uses: actions/checkout@v4.2.2
       - name: install pytest
-        run: pip install pytest pytest-md pytest-emoji httpx
+        run: pip install pytest pytest-md pytest-emoji httpx pytest-asyncio httpx
       - name: Run pytest
         uses: pavelzw/pytest-action@v2.2.0
         with:
