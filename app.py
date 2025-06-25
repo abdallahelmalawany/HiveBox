@@ -50,7 +50,7 @@ async def temperature():
             f"https://api.opensensemap.org/boxes/{sense_box_id}/data/"
             f"{temper_sensor_id}?from-date={from_date}"
         )
-        temperatures = requests.get(data_url).json()
+        temperatures = requests.get(data_url, timeout=5).json()
 
         if temperatures:
             last_temperature_value = temperatures[0]["value"]
