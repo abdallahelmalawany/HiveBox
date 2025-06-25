@@ -47,6 +47,12 @@ jobs:
     needs: unit_testing
     runs-on: ubuntu-latest
     steps:
+      - name: Debug working directory
+        run: |
+          echo "PWD: $(pwd)"
+          echo "Contents:"
+          ls -al
+
       - name: Build image
         uses: docker/build-push-action@v6
         with:
