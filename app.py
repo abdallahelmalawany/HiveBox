@@ -57,5 +57,3 @@ async def temperature():
             count += 1
 
     return {"avg_temp": str(avg_temp / count)} if count else {"avg_temp": "0"}
-
-

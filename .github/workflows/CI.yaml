@@ -13,6 +13,8 @@ jobs:
     steps:
       - name: checkout repo
         uses: actions/checkout@v4.2.2
+      - name: install pytest
+        run: pip install pytest pytest-md pytest-emoji httpx pytest-asyncio httpx  
       - name: run_pylint
         uses: colevandersWands/run_pylint@v1.0.2
       - uses: hadolint/hadolint-action@v3.1.0
