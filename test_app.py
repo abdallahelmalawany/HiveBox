@@ -43,7 +43,7 @@ async def test_version():
 @patch("app.requests.get")
 async def test_temperature(mock_get):
     """Test /temperature endpoint with mocked data."""
-    def mock_get_side_effect(url):
+    def mock_get_side_effect(url, **kwargs):  # Accept **kwargs here
         if "/sensors" in url:
             return MockResponse(mock_sensors_response)
         return MockResponse(mock_data_response)
@@ -57,3 +57,4 @@ async def test_temperature(mock_get):
     expected_avg = (21.0 + 21.0 + 21.0) / 3
     assert response.status_code == 200
     assert response.json() == {"avg_temp": str(expected_avg)}
+
