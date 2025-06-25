@@ -37,10 +37,15 @@ async def temperature():
             if sensor["title"] == "Temperatur":
                 temper_sensor_id = sensor["_id"]
 
-        from_date = (datetime.now(timezone.utc) - timedelta(hours=1)).isoformat().replace("+00:00", "Z")
+                from_date = (
+            datetime.now(timezone.utc) - timedelta(hours=1)
+        ).isoformat().replace("+00:00", "Z")
+
         temperatures = requests.get(
-            f"https://api.opensensemap.org/boxes/{sense_box_id}/data/{temper_sensor_id}?from-date={from_date}"
+            f"https://api.opensensemap.org/boxes/{sense_box_id}/data/"
+            f"{temper_sensor_id}?from-date={from_date}"
         ).json()
+
 
         last_temperature_value = temperatures[0]["value"]
         avg_temp += float(last_temperature_value)

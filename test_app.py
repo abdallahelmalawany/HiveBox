@@ -1,11 +1,24 @@
-# pylint: disable=import-error
-import pytest
+"""
+Unit tests for FastAPI temperature and version endpoints.
+"""
+
 from unittest.mock import patch
+import pytest
 from httpx import AsyncClient, ASGITransport
-from app import app  # ✅ import your FastAPI app from app.py
+from app import app
 
 
-# Mocked responses
+class MockResponse:
+    """Mock response object for requests.get()."""
+
+    def __init__(self, json_data):
+        self._json_data = json_data
+
+    def json(self):
+        """Return mocked JSON data."""
+        return self._json_data
+
+
 mock_sensors_response = {
     "sensors": [
         {"_id": "sensor123", "title": "Temperatur"},
@@ -16,16 +29,9 @@ mock_sensors_response = {
 mock_data_response = [{"value": "21.0"}]
 
 
-class MockResponse:
-    def __init__(self, json_data):
-        self._json_data = json_data
-
-    def json(self):
-        return self._json_data
-
-
 @pytest.mark.asyncio
 async def test_version():
+    """Test /version endpoint."""
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as ac:
         response = await ac.get("/version")
@@ -34,13 +40,13 @@ async def test_version():
 
 
 @pytest.mark.asyncio
-@patch("app.requests.get")  # ✅ patch requests.get in app.py
+@patch("app.requests.get")
 async def test_temperature(mock_get):
-    def mock_get_side_effect(url, *args, **kwargs):
+    """Test /temperature endpoint with mocked data."""
+    def mock_get_side_effect(url):
         if "/sensors" in url:
             return MockResponse(mock_sensors_response)
-        elif "/data/" in url:
-            return MockResponse(mock_data_response)
+        return MockResponse(mock_data_response)
 
     mock_get.side_effect = mock_get_side_effect
 
@@ -48,7 +54,6 @@ async def test_temperature(mock_get):
     async with AsyncClient(transport=transport, base_url="http://test") as ac:
         response = await ac.get("/temperature")
 
-    assert response.status_code == 200
     expected_avg = (21.0 + 21.0 + 21.0) / 3
+    assert response.status_code == 200
     assert response.json() == {"avg_temp": str(expected_avg)}
-
