@@ -13,8 +13,17 @@ jobs:
     steps:
       - name: checkout repo
         uses: actions/checkout@v4.2.2
-      - name: run_pylint
-        uses: colevandersWands/run_pylint@v1.0.2
+      - name: install pytest
+        run: pip install pytest pytest-md pytest-emoji httpx pytest-asyncio httpx  
+      - name: Install dependencies
+        run: |
+             pip install -r requirements.txt
+             pip install pylint
+
+      - name: Run pylint
+        run: |
+              pylint app.py test_app.py
+
       - uses: hadolint/hadolint-action@v3.1.0
         with:
           dockerfile: Dockerfile    
@@ -25,6 +34,8 @@ jobs:
     steps:
       - name: checkout repo
         uses: actions/checkout@v4.2.2
+      - name: install pytest
+        run: pip install pytest pytest-md pytest-emoji httpx pytest-asyncio httpx fastapi[standard]==0.115.13
       - name: Run pytest
         uses: pavelzw/pytest-action@v2.2.0
         with:
@@ -36,9 +47,11 @@ jobs:
     needs: unit_testing
     runs-on: ubuntu-latest
     steps:
+      - name: checkout repo
+        uses: actions/checkout@v4.2.2
       - name: Build image
         uses: docker/build-push-action@v6
         with:
-          context: .
-          tags: ghcr.io/${{ github.repository_owner }}/hivebox:${{ github.sha }}          
-              
+          context: ${{ github.workspace }}
+          file: ${{ github.workspace }}/Dockerfile
+          tags: ghcr.io/${{ github.repository_owner }}/hivebox:${{ github.sha }}
