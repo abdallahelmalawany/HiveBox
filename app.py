@@ -29,7 +29,7 @@ async def temperature():
 
     for sense_box_id in sense_boxes_ids:
         response = requests.get(
-            f"https://api.opensensemap.org/boxes/{sense_box_id}/sensors"
+            f"https://api.opensensemap.org/boxes/{sense_box_id}/sensors",
              timeout=5
         )
         sensors = response.json().get("sensors", [])
