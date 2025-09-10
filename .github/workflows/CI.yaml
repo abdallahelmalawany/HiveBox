@@ -43,6 +43,14 @@ jobs:
           emoji: true
           job-summary: true
           report-title: 'Test Report'
+      - name: Start app in background
+        run: |
+          nohup uvicorn app:app --host 0.0.0.0 --port 8000 &
+          sleep 5
+
+      - name: Call /version endpoint
+        run: |
+          curl -s http://127.0.0.1:8000/version | jq -r '.app_version' | grep "v0.0.2"    
   build_image:
     needs: unit_testing
     runs-on: ubuntu-latest
