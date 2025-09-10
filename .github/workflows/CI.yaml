@@ -59,6 +59,11 @@ jobs:
     name: analysis code
     runs-on: ubuntu-latest
     needs: build_image
+    permissions:
+      security-events: write
+      id-token: write
+      actions: read
+      contents: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
