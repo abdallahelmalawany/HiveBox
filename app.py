@@ -62,5 +62,20 @@ async def temperature():
             last_temperature_value = temperatures[0]["value"]
             avg_temp += float(last_temperature_value)
             count += 1
+          
+    if count == 0:
+        return {"avg_temp": "0", "status": "No Data"}
 
-    return {"avg_temp": str(avg_temp / count)} if count else {"avg_temp": "0"}
+    avg_temp = avg_temp / count
+
+    # Decide status based on avg_temp
+    if avg_temp < 10:
+        status = "Too Cold"
+    elif 11 <= avg_temp <= 36:
+        status = "Good"
+    else:
+        status = "Too Hot"
+
+    return {"avg_temp": str(round(avg_temp, 2)), "status": status}  
+        
+    
