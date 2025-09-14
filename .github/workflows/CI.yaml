@@ -94,8 +94,8 @@ jobs:
         run: kubectl get pods -o wide
 
       - name: Describe pod
-        run: kubectl describe pod -l app=hivebox
-
+        run: |
+          kubectl describe pod -l app=hivebox | grep -A5 "Events"      
       - name: Show logs
         run: kubectl logs -l app=hivebox --tail=50
       - name: Debug events
