@@ -19,8 +19,8 @@ async def root():
 
 @app.get("/metrics")
 async def metrics():
-     """Expose Prometheus metrics in text format."""
-     return Response(generate_latest(), media_type=CONTENT_TYPE_LATEST)
+    """Expose Prometheus metrics in text format."""
+    return Response(generate_latest(), media_type=CONTENT_TYPE_LATEST)
 
 @app.get("/temperature")
 async def temperature():
