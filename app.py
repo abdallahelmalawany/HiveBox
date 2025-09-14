@@ -15,6 +15,9 @@ async def root():
     """Return application version."""
     return {"app_version": "v0.0.2"}
 
+@app.get("/metrics")
+def metrics():
+    return Response(generate_latest(), media_type=CONTENT_TYPE_LATEST)
 
 @app.get("/temperature")
 async def temperature():

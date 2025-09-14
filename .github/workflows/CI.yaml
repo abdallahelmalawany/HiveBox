@@ -50,7 +50,12 @@ jobs:
 
       - name: Call /version endpoint
         run: |
-          curl -s http://127.0.0.1:8000/version | jq -r '.app_version' | grep "v0.0.2"    
+          curl -s http://127.0.0.1:8000/version | jq -r '.app_version' | grep "v0.0.2"   
+          
+      - name: Test /metrics endpoint
+        run: |
+          curl -f http://127.0.0.1:8000/metrics | grep "python_info"    
+
   build_image:
     needs: unit_testing
     runs-on: ubuntu-latest
