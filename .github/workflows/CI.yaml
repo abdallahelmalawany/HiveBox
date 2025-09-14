@@ -58,7 +58,7 @@ jobs:
   integration_testing:
     name: KIND + Ingress Integration Test
     runs-on: ubuntu-latest
-    needs: unit_testing
+    needs: build_image
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4.2.2
