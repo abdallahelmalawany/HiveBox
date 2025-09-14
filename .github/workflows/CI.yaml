@@ -85,8 +85,9 @@ jobs:
       - name: Build Docker image
         run: docker build -t hivebox:latest .
       - name: Load image into KIND
-        run: kind load docker-image hivebox:latest --name kind
-
+        run: |
+          kind load docker-image hivebox:latest --name kind
+          docker exec kind-control-plane crictl images | grep hivebox
       - name: Deploy manifests
         run: kubectl apply -f K8s/
       
@@ -96,7 +97,8 @@ jobs:
       - name: Describe pod
         run: |
           kubectl describe pod -l app=hivebox | grep -A5 "Events"      
-      
+      - name: Show container status
+        run: kubectl get pod -l app=hivebox -o yaml | grep -A5 "state:"
     
 
       - name: Wait for pods
