@@ -55,7 +55,46 @@ jobs:
       - name: Test /metrics endpoint
         run: |
           curl -f http://127.0.0.1:8000/metrics | grep "python_info"    
+  integration_testing:
+    name: KIND + Ingress Integration Test
+    runs-on: ubuntu-latest
+    needs: unit_testing
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4.2.2
 
+      - name: Set up KIND
+        uses: helm/kind-action@v1.9.0
+        with:
+          version: v0.23.0
+          cluster_name: kind
+          node_image: kindest/node:v1.30.0
+
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v4
+        with:
+          version: 'v1.30.0'
+
+      - name: Install Ingress-NGINX
+        run: |
+          kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
+          kubectl wait --namespace ingress-nginx \
+            --for=condition=Ready pod \
+            --selector=app.kubernetes.io/component=controller \
+            --timeout=180s
+
+      - name: Deploy manifests
+        run: kubectl apply -f K8s/
+
+      - name: Wait for pods
+        run: kubectl wait --for=condition=ready pod -l app=myapp -n default --timeout=180s
+
+      - name: Run integration tests
+        run: |
+          kubectl port-forward svc/hivebox-service 8080:80 &
+          sleep 5
+          curl -s http://localhost:8080/version | grep "v0.0.2"
+          curl -s http://localhost:8080/metrics | grep "python_info"
   build_image:
     needs: unit_testing
     runs-on: ubuntu-latest

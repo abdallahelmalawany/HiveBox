@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hivebox
+  labels:
+    app: hivebox
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hivebox
+  template:
+    metadata:
+      labels:
+        app: hivebox
+    spec:
+      containers:
+        - name: hivebox
+          image: ghcr.io/${{ github.repository_owner }}/hivebox:${{ github.sha }}
+          ports:
+            - containerPort: 8000
+          env:
+            - name: PORT
+              value: "8000"
+          readinessProbe:
+            httpGet:
+              path: /version
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /metrics
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 20
