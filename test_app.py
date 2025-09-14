@@ -57,6 +57,6 @@ async def test_temperature(mock_get):
     expected_avg = (21.0 + 21.0 + 21.0) / 3
     assert response.status_code == 200
     assert response.json() == {
-        "avg_temp": str(expected_avg)
+        "avg_temp": str(expected_avg),
         "status": "Good"
 }
