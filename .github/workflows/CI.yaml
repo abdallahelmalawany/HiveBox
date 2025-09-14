@@ -99,7 +99,14 @@ jobs:
           kubectl describe pod -l app=hivebox | grep -A5 "Events"      
       - name: Show container status
         run: kubectl get pod -l app=hivebox -o yaml | grep -A5 "state:"
-    
+      - name: Debug pod (full describe)
+        run: kubectl describe pod -l app=hivebox
+
+      - name: Check container status
+        run: kubectl get pod -l app=hivebox -o jsonpath='{.items[0].status.containerStatuses}' | jq .
+
+      - name: Check node container runtime logs
+        run: docker exec kind-control-plane crictl ps -a
 
       - name: Wait for pods
         run: kubectl wait --for=condition=ready pod -l app=hivebox -n default --timeout=180s
