@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: hivebox
-          image: ghcr.io/${{ github.repository_owner }}/hivebox:${{ github.sha }}
+          image: hivebox:latest
           ports:
             - containerPort: 8000
           env:

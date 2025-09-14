@@ -82,6 +82,10 @@ jobs:
             --for=condition=Ready pod \
             --selector=app.kubernetes.io/component=controller \
             --timeout=180s
+      - name: Build Docker image
+        run: docker build -t hivebox:latest .
+      - name: Load image into KIND
+        run: kind load docker-image hivebox:latest --name kind
 
       - name: Deploy manifests
         run: kubectl apply -f K8s/
