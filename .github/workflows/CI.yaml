@@ -87,7 +87,7 @@ jobs:
         run: kubectl apply -f K8s/
 
       - name: Wait for pods
-        run: kubectl wait --for=condition=ready pod -l app=myapp -n default --timeout=180s
+        run: kubectl wait --for=condition=ready pod -l app=hivebox -n default --timeout=180s
 
       - name: Run integration tests
         run: |
