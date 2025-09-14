@@ -17,6 +17,7 @@ spec:
       containers:
         - name: hivebox
           image: hivebox:latest
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8000
           env:
@@ -26,11 +27,11 @@ spec:
             httpGet:
               path: /version
               port: 8000
-            initialDelaySeconds: 5
+            initialDelaySeconds: 15
             periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /metrics
               port: 8000
-            initialDelaySeconds: 10
+            initialDelaySeconds: 20
             periodSeconds: 20
