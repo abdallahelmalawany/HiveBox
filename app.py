@@ -61,10 +61,9 @@ async def temperature():
         if temperatures:
             last_temperature_value = temperatures[0]["value"]
             avg_temp += float(last_temperature_value)
-            count += 1  
+            count += 1
     if count == 0:
-        return {"avg_temp": "0", "status": "No Data"}
-    
+        return {"avg_temp": "0", "status": "No Data"} 
     avg_temp = avg_temp / count
 
     # Decide status based on avg_temp
