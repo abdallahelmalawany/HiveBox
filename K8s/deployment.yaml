@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: hivebox
-          image: hivebox:latest
+          image: docker.io/library/hivebox:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8000

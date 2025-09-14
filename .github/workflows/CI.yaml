@@ -83,10 +83,10 @@ jobs:
             --selector=app.kubernetes.io/component=controller \
             --timeout=180s
       - name: Build Docker image
-        run: docker build -t hivebox:latest .
+        run: docker build -t docker.io/library/hivebox:latest .
       - name: Load image into KIND
         run: |
-          kind load docker-image hivebox:latest --name kind
+          kind load docker-image docker.io/library/hivebox:latest --name kind
           docker exec kind-control-plane crictl images | grep hivebox
       - name: Deploy manifests
         run: kubectl apply -f K8s/
