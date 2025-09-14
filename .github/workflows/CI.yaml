@@ -96,14 +96,15 @@ jobs:
       - name: Describe pod
         run: |
           kubectl describe pod -l app=hivebox | grep -A5 "Events"      
-      - name: Show logs
-        run: kubectl logs -l app=hivebox --tail=50
-      - name: Debug events
-        run: kubectl get events --sort-by=.metadata.creationTimestamp -A | tail -n 30
+      
     
 
       - name: Wait for pods
         run: kubectl wait --for=condition=ready pod -l app=hivebox -n default --timeout=180s
+      - name: Show logs
+        run: kubectl logs -l app=hivebox --tail=50
+      - name: Debug events
+        run: kubectl get events --sort-by=.metadata.creationTimestamp -A | tail -n 30  
 
       - name: Run integration tests
         run: |
