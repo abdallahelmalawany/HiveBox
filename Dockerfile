@@ -5,6 +5,6 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 COPY . . 
-EXPOSE 80
+EXPOSE 8000
 ENTRYPOINT [ "fastapi" ]
-CMD [ "run", "app.py", "--port", "80" ]
+CMD [ "run", "app.py", "--port", "8000" ]
