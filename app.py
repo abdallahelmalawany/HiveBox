@@ -64,7 +64,7 @@ async def temperature():
             count += 1  
     if count == 0:
         return {"avg_temp": "0", "status": "No Data"}
-
+    
     avg_temp = avg_temp / count
 
     # Decide status based on avg_temp
@@ -74,5 +74,5 @@ async def temperature():
         status = "Good"
     else:
         status = "Too Hot"
-  
+ 
     return {"avg_temp": str(round(avg_temp, 2)), "status": status}
