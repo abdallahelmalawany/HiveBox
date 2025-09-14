@@ -85,6 +85,15 @@ jobs:
 
       - name: Deploy manifests
         run: kubectl apply -f K8s/
+      
+      - name: Get pod status
+        run: kubectl get pods -o wide
+
+      - name: Describe pod
+        run: kubectl describe pod -l app=hivebox
+
+      - name: Show logs
+        run: kubectl logs -l app=hivebox --tail=50  
 
       - name: Wait for pods
         run: kubectl wait --for=condition=ready pod -l app=hivebox -n default --timeout=180s
