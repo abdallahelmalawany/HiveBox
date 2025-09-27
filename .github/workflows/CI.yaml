@@ -84,7 +84,7 @@ jobs:
           # Disabling shallow clone is recommended for improving relevancy of reporting.
           fetch-depth: 0
 
-      # Triggering SonarQube analysis as results of it are required by Quality Gate check.
+      # Triggering SonarQube analysis as results of it are required by Quality Gate check.##
       - name: SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@master
         env:
