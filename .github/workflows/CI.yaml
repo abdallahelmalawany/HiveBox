@@ -94,7 +94,8 @@ jobs:
           args: >
             -Dsonar.organization=abdallahelmalawany
             -Dsonar.projectKey=abdallahelmalawany_HiveBox
-            -Dsonar.sources=.  
+            -Dsonar.sources=.
+            -Dsonar.scm.revision=${{ github.sha }}
 
       # Check the Quality Gate status.
       - name: SonarQube Quality Gate check
