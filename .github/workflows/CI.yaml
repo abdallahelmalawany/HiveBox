@@ -86,7 +86,7 @@ jobs:
 
       # Triggering SonarQube analysis as results of it are required by Quality Gate check.##
       - name: SonarQube Scan
-        uses: sonarsource/sonarqube-scan-action
+        uses: sonarsource/sonarqube-scan-action@5ffbad44543237d1b339a5ed57a774432e19f3e4
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
@@ -100,7 +100,7 @@ jobs:
       # Check the Quality Gate status.
       - name: SonarQube Quality Gate check
         id: sonarqube-quality-gate-check
-        uses: sonarsource/sonarqube-quality-gate-action
+        uses: sonarsource/sonarqube-quality-gate-action@174f8360a05574d0a8fe9324af3c2f891ad33ddb
         with:
           pollingTimeoutSec: 600
           
